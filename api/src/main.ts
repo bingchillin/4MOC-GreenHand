@@ -1,8 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import * as path from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Set the views directory
+  app.setBaseViewsDir(path.join(__dirname, '..', '/src/views'));
+
+  // Set Handlebars as the rendering engine
+  app.setViewEngine('hbs');
+
   await app.listen(3000);
 }
 bootstrap();

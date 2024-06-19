@@ -30,15 +30,26 @@ export class UserService {
     return this.userDocumentModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    return await this.userDocumentModel.findById(id).exec();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
+    const existingUser = await this.userDocumentModel
+      .findByIdAndUpdate({ _id: id }, { ...updateUserDto, password: hashedPassword }, { new: true })
+      .exec();
+
+    return existingUser;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const result = await this.userDocumentModel.deleteOne({ _id: id }).exec();
+
+    if (result.deletedCount === 0) {
+      throw new Error('User not found');
+    }
+
+    return `User with id ${id} has been deleted`;
   }
 }
