@@ -1,5 +1,12 @@
 $(document).ready(function () {
     $('#example').DataTable();
+    $('.select2').select2({
+        dropdownParent: $('#createUserModal')
+    });
+    const tooltips = document.querySelectorAll('.tt');
+    tooltips.forEach(tooltip => {
+        new bootstrap.Tooltip(tooltip);
+    });
 });
 
 document.addEventListener('DOMContentLoaded', () => {

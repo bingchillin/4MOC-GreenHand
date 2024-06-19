@@ -1,7 +1,8 @@
 {{> head}}
 
 <!-- Modale création utilisateur -->
-<div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
+<div class="modal fade" id="createUserModal" data-bs-backdrop="static" tabindex="-1"
+    aria-labelledby="createUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,24 +13,53 @@
                 <form action="/user" method="POST" id="createUserForm">
                     <div class="mb-3">
                         <label for="name" class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <div class="input-group">
+                            <input type="text" class="form-control border border-danger" id="name" name="name">
+                            <div class="input-group-append">
+                                <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Obligatoire">
+                                    <i class="bi bi-info-circle-fill"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email">
+                        <div class="input-group">
+                            <input type="email" class="form-control border border-danger" id="email" name="email">
+                            <div class="input-group-append">
+                                <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Obligatoire">
+                                    <i class="bi bi-info-circle-fill"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" id="password" name="password">
+                        <div class="input-group">
+                            <input type="password" class="form-control border border-danger" id="password"
+                                name="password">
+                            <div class="input-group-append">
+                                <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Obligatoire">
+                                    <i class="bi bi-info-circle-fill"></i>
+                                </span>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="mb-3">
                         <label for="role" class="form-label">Rôle</label>
-                        <select class="form-select" id="role" name="role">
+                        <select class="select2" id="role" name="role" style="width: 100%">
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary" id="createButton">Créer</button>
+                    <div class="pt-3">
+                        <button type="submit" class="btn btn-primary" id="createButton">Créer</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    </div>
                 </form>
             </div>
         </div>
