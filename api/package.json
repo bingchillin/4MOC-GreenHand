@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^10.3.9",
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",
+    "datatables.net-dt": "^2.0.8",
     "handlebars": "^4.7.8",
     "hbs": "^4.2.0",
     "mongoose": "^8.4.3",
