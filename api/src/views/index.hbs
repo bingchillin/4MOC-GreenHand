@@ -159,7 +159,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 text-end mt-3">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createUserModal">
                 Créer un utilisateur
             </button>
@@ -188,10 +188,22 @@
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" id="idButton" data-user-id="{{_id}}" data-bs-toggle="modal"
-                                        data-bs-target="#updateUserModal">Modifier</a></li>
-                                <li><a class="dropdown-item" id="idButtonDelete" data-user-id="{{_id}}"
-                                        data-bs-toggle="modal" data-bs-target="#deleteUserModal">Supprimer</a></li>
+                                <li>
+                                    <div class="d-flex align-items-center">
+
+                                        <a class="dropdown-item" id="idButton" data-user-id="{{_id}}"
+                                            data-bs-toggle="modal" data-bs-target="#updateUserModal"><i
+                                                class="bi bi-pencil-square m-3"></i>Modifier</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex align-items-center">
+                                        <a class="dropdown-item" id="idButtonDelete" data-user-id="{{_id}}"
+                                            data-bs-toggle="modal" data-bs-target="#deleteUserModal"><i
+                                                class="bi bi-trash m-3"></i>Supprimer</a>
+                                    </div>
+
+                                </li>
                             </ul>
                         </div>
                     </td>

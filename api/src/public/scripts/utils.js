@@ -4,9 +4,20 @@ function formatDate(date) {
 }
 
 function setupInputField(id) {
-    $(id).on('input', function () {
-        var input = $(this);
-        var is_filled = input.val();
+    var input = $(id);
+
+    // Initial check
+    var is_filled = input.val();
+    if (is_filled) {
+        input.removeClass("border-danger").addClass("border-success");
+    }
+    else {
+        input.removeClass("border-success").addClass("border-danger");
+    }
+
+    // Check on input
+    input.on('input', function () {
+        is_filled = input.val();
         if (is_filled) {
             input.removeClass("border-danger").addClass("border-success");
         }

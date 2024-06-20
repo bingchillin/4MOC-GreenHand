@@ -24,6 +24,9 @@ $(document).ready(function () {
                 $('#editPassword').val('');
                 $('#editPassword').attr('placeholder', 'Laissez vide pour ne pas changer');
                 $('#editRole').val(user.role);
+
+                setupInputField('#editName');
+                setupInputField('#editEmail');
             })
             .catch(error => console.error('Error:', error));
     });
