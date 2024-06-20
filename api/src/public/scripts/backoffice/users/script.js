@@ -1,8 +1,8 @@
 $(document).ready(function () {
     $('#example').DataTable();
-    $('.select2').select2({
-        dropdownParent: $('#createUserModal')
-    });
+    $('#createUserModal .select2').select2({ dropdownParent: $('#createUserModal') });
+    $('#updateUserModal .select2').select2({ dropdownParent: $('#updateUserModal') });
+
     const tooltips = document.querySelectorAll('.tt');
     tooltips.forEach(tooltip => {
         new bootstrap.Tooltip(tooltip);
