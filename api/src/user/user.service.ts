@@ -11,7 +11,7 @@ export class UserService {
   constructor(@InjectModel(User.name) private userDocumentModel: Model<UserDocument>) { }
 
   async create(createUserDto: CreateUserDto) {
-    const existingUser = await this.userDocumentModel.findOne({ email: createUserDto.email }).exec();
+    const existingUser = await this.userDocumentModel.findOne({ email: createUserDto.email }).lean().exec();
 
     if (existingUser) {
       return 'User already exists';
@@ -27,15 +27,15 @@ export class UserService {
   }
 
   findAll() {
-    return this.userDocumentModel.find().exec();
+    return this.userDocumentModel.find().lean().exec();
   }
 
   async findOne(id: string) {
-    return await this.userDocumentModel.findById(id).exec();
+    return await this.userDocumentModel.findById(id).lean().exec();
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const existingUser = await this.userDocumentModel.findById(id).exec();
+    const existingUser = await this.userDocumentModel.findById(id).lean().exec();
     if (!existingUser) {
       throw new Error('User not found');
     }
@@ -48,13 +48,14 @@ export class UserService {
 
     const res = await this.userDocumentModel
       .findByIdAndUpdate({ _id: id }, { ...updateUserDto, password: hashedPassword }, { new: true })
+      .lean()
       .exec();
 
     return res;
   }
 
   async remove(id: string) {
-    const result = await this.userDocumentModel.deleteOne({ _id: id }).exec();
+    const result = await this.userDocumentModel.deleteOne({ _id: id }).lean().exec();
 
     if (result.deletedCount === 0) {
       throw new Error('User not found');
