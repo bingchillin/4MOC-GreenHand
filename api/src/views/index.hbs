@@ -133,6 +133,29 @@
         </div>
     </div>
 </div>
+<!-- Fin modale modification utilisateur -->
+
+<!-- Modale suppression utilisateur -->
+<div class="modal fade" id="deleteUserModal" data-bs-backdrop="static" tabindex="-1"
+    aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteUserModalLabel">Supprimer un utilisateur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="deleteId" name="id">
+                <p>Êtes-vous sûr de vouloir supprimer cet utilisateur ?</p>
+                <div class="pt-3">
+                    <button type="submit" class="btn btn-danger" id="deleteButton">Supprimer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fin modale suppression utilisateur -->
 
 <div class="container">
     <div class="row">
@@ -167,7 +190,8 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <li><a class="dropdown-item" id="idButton" data-user-id="{{_id}}" data-bs-toggle="modal"
                                         data-bs-target="#updateUserModal">Modifier</a></li>
-                                <li><a class="dropdown-item" href="#">Supprimer</a></li>
+                                <li><a class="dropdown-item" id="idButtonDelete" data-user-id="{{_id}}"
+                                        data-bs-toggle="modal" data-bs-target="#deleteUserModal">Supprimer</a></li>
                             </ul>
                         </div>
                     </td>

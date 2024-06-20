@@ -19,11 +19,10 @@ $(document).ready(function () {
         fetch(`/user/${userId}`)
             .then(response => response.json())
             .then(user => {
-                $('#editId').val(user.id);
                 $('#editName').val(user.name);
                 $('#editEmail').val(user.email);
                 $('#editPassword').val('');
-                $('#editPassword').attr('placeholder', 'Leave empty to keep the current password');
+                $('#editPassword').attr('placeholder', 'Laissez vide pour ne pas changer');
                 $('#editRole').val(user.role);
             })
             .catch(error => console.error('Error:', error));
@@ -80,8 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
             role: formData.get('role'),
         };
 
-        const button = document.querySelector('#idButton');  // Replace with the correct selector
-        const userId = button.dataset.userId;  // Replace 'userId' with the correct data attribute name
+        const button = document.querySelector('#idButton');
+        const userId = button.dataset.userId;
 
         try {
             const response = await fetch(`/user/${userId}`, {
@@ -101,6 +100,42 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error:', error);
             alert('An error occurred.');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    let userIdToDelete = null;
+
+    const deleteButtons = document.querySelectorAll('#idButtonDelete');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            userIdToDelete = event.currentTarget.dataset.userId;
+        });
+    });
+
+    const confirmDeleteButton = document.querySelector('#deleteButton');
+    confirmDeleteButton.addEventListener('click', async () => {
+        if (userIdToDelete) {
+            try {
+                const response = await fetch(`/user/${userIdToDelete}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Failed to delete user.');
+                    console.error('Error:', response);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred.');
+            }
         }
     });
 });
