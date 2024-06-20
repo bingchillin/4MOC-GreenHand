@@ -65,6 +65,74 @@
         </div>
     </div>
 </div>
+<!-- Fin modale création utilisateur -->
+
+<!-- Modale modification utilisateur -->
+<div class="modal fade" id="updateUserModal" data-bs-backdrop="static" tabindex="-1"
+    aria-labelledby="updateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateUserModalLabel">Modifier un utilisateur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/user" method="POST" id="updateUserForm">
+                    <input type="hidden" id="editId" name="id">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nom</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control border border-danger" id="editName" name="name">
+                            <div class="input-group-append">
+                                <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Obligatoire">
+                                    <i class="bi bi-info circle-fill"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control border border-danger" id="editEmail" name="email">
+                            <div class="input-group-append">
+                                <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Obligatoire">
+                                    <i class="bi bi-info
+                                    circle-fill"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mot de passe</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control border border-danger" id="editPassword"
+                                name="password">
+                            <div class="input-group-append">
+                                <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Obligatoire">
+                                    <i class="bi bi-info"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Rôle</label>
+                        <select class="select2" id="editRole" name="role" style="width: 100%">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="pt-3">
+                        <button type="submit" class="btn btn-primary" id="updateButton">Modifier</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container">
     <div class="row">
@@ -80,6 +148,7 @@
                     <th>Email</th>
                     <th>Rôle</th>
                     <th>Date de création</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -89,6 +158,19 @@
                     <td>{{email}}</td>
                     <td>{{role}}</td>
                     <td>{{createdAt}}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" id="idButton" data-user-id="{{_id}}" data-bs-toggle="modal"
+                                        data-bs-target="#updateUserModal">Modifier</a></li>
+                                <li><a class="dropdown-item" href="#">Supprimer</a></li>
+                            </ul>
+                        </div>
+                    </td>
                 </tr>
                 {{/each}}
             </tbody>

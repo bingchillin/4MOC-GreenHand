@@ -35,12 +35,22 @@ export class UserService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
-    const existingUser = await this.userDocumentModel
+    const existingUser = await this.userDocumentModel.findById(id).exec();
+    if (!existingUser) {
+      throw new Error('User not found');
+    }
+
+    let hashedPassword = existingUser.password;
+
+    if (updateUserDto.password && !(await bcrypt.compare(updateUserDto.password, existingUser.password))) {
+      hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
+    }
+
+    const res = await this.userDocumentModel
       .findByIdAndUpdate({ _id: id }, { ...updateUserDto, password: hashedPassword }, { new: true })
       .exec();
 
-    return existingUser;
+    return res;
   }
 
   async remove(id: string) {
