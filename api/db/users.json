@@ -1,73 +1,53 @@
-[
-    {
-      "name": "Alice Johnson",
-      "email": "alice.johnson@example.com",
-      "password": "password123",
-      "role": "user",
-      "createdAt": "2023-06-01T10:00:00Z"
-    },
-    {
-      "name": "Bob Smith",
-      "email": "bob.smith@example.com",
-      "password": "password123",
-      "role": "admin",
-      "createdAt": "2023-06-02T11:00:00Z"
-    },
-    {
-      "name": "Charlie Brown",
-      "email": "charlie.brown@example.com",
-      "password": "password123",
-      "role": "user",
-      "createdAt": "2023-06-03T12:00:00Z"
-    },
-    {
-      "name": "David Wilson",
-      "email": "david.wilson@example.com",
-      "password": "password123",
-      "role": "user",
-      "createdAt": "2023-06-04T13:00:00Z"
-    },
-    {
-      "name": "Eva Green",
-      "email": "eva.green@example.com",
-      "password": "password123",
-      "role": "admin",
-      "createdAt": "2023-06-05T14:00:00Z"
-    },
-    {
-      "name": "Frank White",
-      "email": "frank.white@example.com",
-      "password": "password123",
-      "role": "user",
-      "createdAt": "2023-06-06T15:00:00Z"
-    },
-    {
-      "name": "Grace Harris",
-      "email": "grace.harris@example.com",
-      "password": "password123",
-      "role": "user",
-      "createdAt": "2023-06-07T16:00:00Z"
-    },
-    {
-      "name": "Henry Clark",
-      "email": "henry.clark@example.com",
-      "password": "password123",
-      "role": "admin",
-      "createdAt": "2023-06-08T17:00:00Z"
-    },
-    {
-      "name": "Ivy Lewis",
-      "email": "ivy.lewis@example.com",
-      "password": "password123",
-      "role": "user",
-      "createdAt": "2023-06-09T18:00:00Z"
-    },
-    {
-      "name": "Jack Walker",
-      "email": "jack.walker@example.com",
-      "password": "password123",
-      "role": "user",
-      "createdAt": "2023-06-10T19:00:00Z"
-    }
-  ]
-  
+[{
+  "_id": {
+    "$oid": "6673f04df28fdb0c1a1e6a52"
+  },
+  "name": "Charlie Brown",
+  "email": "charlie.brown@example.com",
+  "password": "password123",
+  "role": "user",
+  "createdAt": "2023-06-03T12:00:00Z"
+},
+{
+  "_id": {
+    "$oid": "6673f04df28fdb0c1a1e6a54"
+  },
+  "name": "Eva Green",
+  "email": "eva.green@example.com",
+  "password": "password123",
+  "role": "admin",
+  "createdAt": "2023-06-05T14:00:00Z"
+},
+{
+  "_id": {
+    "$oid": "6673f04df28fdb0c1a1e6a56"
+  },
+  "name": "Grace Harris",
+  "email": "grace.harris@example.com",
+  "password": "password123",
+  "role": "user",
+  "createdAt": "2023-06-07T16:00:00Z"
+},
+{
+  "_id": {
+    "$oid": "6673f04df28fdb0c1a1e6a59"
+  },
+  "name": "Jack Walker",
+  "email": "jack.walker@example.com",
+  "password": "password123",
+  "role": "user",
+  "createdAt": "2023-06-10T19:00:00Z"
+},
+{
+  "_id": {
+    "$oid": "667401c56336fa601da65a46"
+  },
+  "name": "Kenny",
+  "email": "ken@ken",
+  "password": "$2b$10$AvxIEEi8PfL35M9d2nPdIeWzC0uqiP0gRNORJwf2jqlEMpkucYtvu",
+  "role": "user",
+  "createdAt": {
+    "$date": "2024-06-20T10:17:41.409Z"
+  },
+  "__v": 0
+}]
