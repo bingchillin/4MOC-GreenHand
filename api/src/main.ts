@@ -18,7 +18,7 @@ async function bootstrap() {
       extname: 'hbs',
       partialsDir: join(__dirname, '..', '/src/views/partials'),
       layoutsDir: join(__dirname, '..', '/src/views/layouts'),
-      defaultLayout: false,
+      defaultLayout: 'template.hbs',
       helpers: {
         formatDate: (date: Date) => {
           const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };

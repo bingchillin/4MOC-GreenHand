@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $('#example').DataTable();
+    $("#metismenu").metisMenu();
     $('#createUserModal .select2').select2({ dropdownParent: $('#createUserModal') });
     $('#updateUserModal .select2').select2({ dropdownParent: $('#updateUserModal') });
 
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                window.location.reload();  // Reload the page
+                window.location.reload();
             } else {
                 alert('Failed to create user.');
                 console.error('Error:', response);
