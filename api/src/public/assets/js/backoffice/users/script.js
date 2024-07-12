@@ -33,6 +33,7 @@ $(document).ready(function () {
     });
 });
 
+// ======================       CREATE        =============================
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('createUserForm');
 
@@ -69,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// ======================       UPDATE        =============================
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('updateUserForm');
 
@@ -108,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// ======================       DELETE        =============================
 document.addEventListener('DOMContentLoaded', () => {
     let userIdToDelete = null;
 

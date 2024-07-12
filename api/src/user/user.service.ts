@@ -11,56 +11,76 @@ export class UserService {
   constructor(@InjectModel(User.name) private userDocumentModel: Model<UserDocument>) { }
 
   async create(createUserDto: CreateUserDto) {
-    const existingUser = await this.userDocumentModel.findOne({ email: createUserDto.email }).lean().exec();
+    try {
+      const existingUser = await this.userDocumentModel.findOne({ email: createUserDto.email }).lean().exec();
 
-    if (existingUser) {
-      return 'User already exists';
+      if (existingUser) {
+        return 'User already exists';
+      }
+
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+      const newUser = new this.userDocumentModel({
+        ...createUserDto,
+        password: hashedPassword
+      });
+
+      return newUser.save();
+    } catch (error) {
+      throw new Error(`Failed to create user: ${error.message}`);
     }
-
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-    const newUser = new this.userDocumentModel({
-      ...createUserDto,
-      password: hashedPassword
-    });
-
-    return newUser.save();
   }
 
-  findAll() {
-    return this.userDocumentModel.find().lean().exec();
+  async findAll() {
+    try {
+      return await this.userDocumentModel.find().lean().exec();
+    } catch (error) {
+      throw new Error(`Failed to find all users: ${error.message}`);
+    }
   }
 
   async findOne(id: string) {
-    return await this.userDocumentModel.findById(id).lean().exec();
+    try {
+      return this.userDocumentModel.findById(id).lean().exec();
+    } catch (error) {
+      throw new Error(`Failed to find user by id: ${error.message}`);
+    }
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const existingUser = await this.userDocumentModel.findById(id).lean().exec();
-    if (!existingUser) {
-      throw new Error('User not found');
+    try {
+      const existingUser = await this.userDocumentModel.findById(id).lean().exec();
+      if (!existingUser) {
+        throw new Error('User not found');
+      }
+
+      let hashedPassword = existingUser.password;
+
+      if (updateUserDto.password && !(bcrypt.compare(updateUserDto.password, existingUser.password))) {
+        hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
+      }
+
+      const res = await this.userDocumentModel
+          .findByIdAndUpdate({ _id: id }, { ...updateUserDto, password: hashedPassword }, { new: true })
+          .lean()
+          .exec();
+
+      return res;
+    } catch (error) {
+      throw new Error(`Failed to update user: ${error.message}`);
     }
-
-    let hashedPassword = existingUser.password;
-
-    if (updateUserDto.password && !(await bcrypt.compare(updateUserDto.password, existingUser.password))) {
-      hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
-    }
-
-    const res = await this.userDocumentModel
-      .findByIdAndUpdate({ _id: id }, { ...updateUserDto, password: hashedPassword }, { new: true })
-      .lean()
-      .exec();
-
-    return res;
   }
 
   async remove(id: string) {
-    const result = await this.userDocumentModel.deleteOne({ _id: id }).lean().exec();
+    try {
+      const result = await this.userDocumentModel.deleteOne({ _id: id }).lean().exec();
 
-    if (result.deletedCount === 0) {
-      throw new Error('User not found');
+      if (result.deletedCount === 0) {
+        throw new Error('User not found');
+      }
+
+      return `User with id ${id} has been deleted`;
+    } catch (error) {
+      throw new Error(`Failed to delete user: ${error.message}`);
     }
-
-    return `User with id ${id} has been deleted`;
   }
 }
