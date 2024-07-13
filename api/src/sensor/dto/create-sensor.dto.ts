@@ -4,4 +4,5 @@ export class CreateSensorDto {
     waterLevel: number;
     motorStatus: boolean;
     createdAt: Date;
+    email: string;
 }

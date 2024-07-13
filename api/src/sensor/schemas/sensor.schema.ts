@@ -19,6 +19,9 @@ export class Sensor {
 
     @Prop({ default: Date.now })
     createdAt: Date;
+
+    @Prop()
+    email: string;
 }
 
 export const SensorSchema = SchemaFactory.createForClass(Sensor);

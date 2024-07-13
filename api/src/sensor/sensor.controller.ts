@@ -8,7 +8,8 @@ import {
     Delete,
     HttpException,
     HttpStatus,
-    NotFoundException
+    NotFoundException,
+    Render
 } from '@nestjs/common';
 import {SensorService} from './sensor.service';
 import {CreateSensorDto} from './dto/create-sensor.dto';
@@ -29,9 +30,11 @@ export class SensorController {
     }
 
     @Get()
+    @Render('sensors/sensors')
     async findAllView() {
         try {
-            return await this.sensorService.findAll();
+            const sensors = await this.sensorService.findAll();
+            return {sensors};
         } catch (error) {
             throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
         }

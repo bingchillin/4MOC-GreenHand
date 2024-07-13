@@ -7,4 +7,5 @@ export class UpdateSensorDto extends PartialType(CreateSensorDto) {
     waterLevel: number;
     motorStatus: boolean;
     createdAt: Date;
+    email: string;
 }
