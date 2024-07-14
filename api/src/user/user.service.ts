@@ -46,6 +46,14 @@ export class UserService {
     }
   }
 
+  async findOneByEmail(email: string) {
+    try {
+      return this.userDocumentModel.findOne({ email }).lean().exec();
+    } catch (error) {
+        throw new Error(`Failed to find user by email: ${error.message}`);
+    }
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {
       const existingUser = await this.userDocumentModel.findById(id).lean().exec();
