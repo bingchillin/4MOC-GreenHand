@@ -1,6 +1,6 @@
 <!-- Modale création utilisateur -->
 <div class="modal fade" id="createUserModal" data-bs-backdrop="static" tabindex="-1"
-    aria-labelledby="createUserModalLabel" aria-hidden="true">
+     aria-labelledby="createUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -15,7 +15,7 @@
                             <input type="text" class="form-control border border-danger" id="name" name="name">
                             <div class="input-group-append">
                                 <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Obligatoire">
+                                      data-bs-placement="top" title="Obligatoire">
                                     <i class="bi bi-info-circle-fill"></i>
                                 </span>
                             </div>
@@ -27,7 +27,7 @@
                             <input type="email" class="form-control border border-danger" id="email" name="email">
                             <div class="input-group-append">
                                 <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Obligatoire">
+                                      data-bs-placement="top" title="Obligatoire">
                                     <i class="bi bi-info-circle-fill"></i>
                                 </span>
                             </div>
@@ -37,10 +37,10 @@
                         <label for="password" class="form-label">Mot de passe</label>
                         <div class="input-group">
                             <input type="password" class="form-control border border-danger" id="password"
-                                name="password">
+                                   name="password">
                             <div class="input-group-append">
                                 <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Obligatoire">
+                                      data-bs-placement="top" title="Obligatoire">
                                     <i class="bi bi-info-circle-fill"></i>
                                 </span>
                             </div>
@@ -67,7 +67,7 @@
 
 <!-- Modale modification utilisateur -->
 <div class="modal fade" id="updateUserModal" data-bs-backdrop="static" tabindex="-1"
-    aria-labelledby="updateUserModalLabel" aria-hidden="true">
+     aria-labelledby="updateUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -83,7 +83,7 @@
                             <input type="text" class="form-control border border-danger" id="editName" name="name">
                             <div class="input-group-append">
                                 <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Obligatoire">
+                                      data-bs-placement="top" title="Obligatoire">
                                     <i class="bi bi-info circle-fill"></i>
                                 </span>
                             </div>
@@ -95,7 +95,7 @@
                             <input type="email" class="form-control border border-danger" id="editEmail" name="email">
                             <div class="input-group-append">
                                 <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Obligatoire">
+                                      data-bs-placement="top" title="Obligatoire">
                                     <i class="bi bi-info
                                     circle-fill"></i>
                                 </span>
@@ -106,10 +106,10 @@
                         <label for="password" class="form-label">Mot de passe</label>
                         <div class="input-group">
                             <input type="password" class="form-control border border-danger" id="editPassword"
-                                name="password">
+                                   name="password">
                             <div class="input-group-append">
                                 <span class="input-group-text tt" style="height: 100%;" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Obligatoire">
+                                      data-bs-placement="top" title="Obligatoire">
                                     <i class="bi bi-info"></i>
                                 </span>
                             </div>
@@ -135,7 +135,7 @@
 
 <!-- Modale suppression utilisateur -->
 <div class="modal fade" id="deleteUserModal" data-bs-backdrop="static" tabindex="-1"
-    aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+     aria-labelledby="deleteUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -164,16 +164,16 @@
         </div>
         <table id="example" class="table" style="width:100%">
             <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Email</th>
-                    <th>Rôle</th>
-                    <th>Date de création</th>
-                    <th>Actions</th>
-                </tr>
+            <tr>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Date de création</th>
+                <th>Actions</th>
+            </tr>
             </thead>
             <tbody>
-                {{#each users}}
+            {{#each users}}
                 <tr>
                     <td>{{name}}</td>
                     <td>{{email}}</td>
@@ -182,7 +182,7 @@
                     <td>
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -190,14 +190,14 @@
                                     <div class="d-flex align-items-center">
 
                                         <a class="dropdown-item" id="idButton" data-user-id="{{_id}}"
-                                            data-bs-toggle="modal" data-bs-target="#updateUserModal"><i
+                                           data-bs-toggle="modal" data-bs-target="#updateUserModal"><i
                                                 class="bi bi-pencil-square m-3"></i>Modifier</a>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="d-flex align-items-center">
                                         <a class="dropdown-item" id="idButtonDelete" data-user-id="{{_id}}"
-                                            data-bs-toggle="modal" data-bs-target="#deleteUserModal"><i
+                                           data-bs-toggle="modal" data-bs-target="#deleteUserModal"><i
                                                 class="bi bi-trash m-3"></i>Supprimer</a>
                                     </div>
 
@@ -206,7 +206,7 @@
                         </div>
                     </td>
                 </tr>
-                {{/each}}
+            {{/each}}
             </tbody>
         </table>
     </div>

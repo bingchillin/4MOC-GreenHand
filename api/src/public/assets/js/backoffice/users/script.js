@@ -24,7 +24,8 @@ $(document).ready(function () {
                 $('#editEmail').val(user.email);
                 $('#editPassword').val('');
                 $('#editPassword').attr('placeholder', 'Laissez vide pour ne pas changer');
-                $('#editRole').val(user.role);
+                const role = user.role;
+                $('#editRole').val(role).trigger('change');
 
                 setupInputField('#editName');
                 setupInputField('#editEmail');
@@ -72,40 +73,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ======================       UPDATE        =============================
 document.addEventListener('DOMContentLoaded', () => {
+    let userIdToUpdate = null;
     const form = document.getElementById('updateUserForm');
 
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    const updateButtons = document.querySelectorAll('#idButton');
+    updateButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            userIdToUpdate = event.currentTarget.dataset.userId;
+        });
+    });
 
-        const formData = new FormData(form);
-        const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            password: formData.get('password'),
-            role: formData.get('role'),
-        };
+    const confirmUpdateButton = document.querySelector('#updateButton');
+    confirmUpdateButton.addEventListener('click', async (event) => {
+        if(userIdToUpdate) {
+            event.preventDefault();
 
-        const button = document.querySelector('#idButton');
-        const userId = button.dataset.userId;
+            const formData = new FormData(form);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                role: formData.get('role'),
+            };
 
-        try {
-            const response = await fetch(`/user/${userId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
+            try {
+                const response = await fetch(`/user/${userIdToUpdate}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
 
-            if (response.ok) {
-                window.location.reload();
-            } else {
-                alert('Failed to update user.');
-                console.error('Error:', response);
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Failed to update user.');
+                    console.error('Error:', response);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred.');
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred.');
         }
     });
 });

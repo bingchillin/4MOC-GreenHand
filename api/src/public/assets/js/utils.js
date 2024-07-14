@@ -26,3 +26,20 @@ function setupInputField(id) {
         }
     });
 }
+
+async function fetchUsersAndPopulateSelect(selectId) {
+    try {
+        const response = await fetch('/api/users');
+        const users = await response.json();
+        const select = document.getElementById(selectId);
+
+        users.forEach(user => {
+            const option = document.createElement('option');
+            option.text = user.name;
+            option.value = user.email; // Assumant que l'objet utilisateur a une propriété 'email'
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+    }
+}

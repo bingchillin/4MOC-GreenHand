@@ -10,6 +10,7 @@ $(document).ready(function () {
     });
 
     setupInputField('#name');
+    fetchUsersAndPopulateSelect('userSelect');
 
     $('#updateSensorModal').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget);
@@ -21,7 +22,8 @@ $(document).ready(function () {
                 $('#editName').val(sensor.name);
                 $('#editHumidityLevel').val(sensor.humidityLevel);
                 $('#editWaterLevel').val(sensor.waterLevel);
-                $('#editRole').val(sensor.role);
+                const motorStatus = sensor.motorStatus.toString();
+                $('#editMotor').val(motorStatus).trigger('change');
 
                 setupInputField('#editName');
                 setupInputField('#editHumidityLevel');
@@ -40,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData(form);
         const data = {
+            email: formData.get('email'),
             name: formData.get('name'),
             humidityLevel: formData.get('humidityLevel'),
             waterLevel: formData.get('waterLevel'),
@@ -70,40 +73,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ======================       UPDATE        =============================
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('updateUserForm');
+    let sensorIdToUpdate = null;
+    const form = document.getElementById('updateSensorForm');
 
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    const updateButtons = document.querySelectorAll('#idButton');
+    updateButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            sensorIdToUpdate = event.currentTarget.dataset.sensorId;
+        });
+    });
 
-        const formData = new FormData(form);
-        const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            password: formData.get('password'),
-            role: formData.get('role'),
-        };
+    const confirmUpdateButton = document.querySelector('#updateButton');
+    confirmUpdateButton.addEventListener('click', async (event) => {
+        if(sensorIdToUpdate) {
+            event.preventDefault();
 
-        const button = document.querySelector('#idButton');
-        const userId = button.dataset.userId;
+            const formData = new FormData(form);
+            const data = {
+                name: formData.get('name'),
+                humidityLevel: formData.get('humidityLevel'),
+                waterLevel: formData.get('waterLevel'),
+                motorStatus: formData.get('motor'),
+            };
 
-        try {
-            const response = await fetch(`/user/${userId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
+            try {
+                const response = await fetch(`/sensor/${sensorIdToUpdate}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
 
-            if (response.ok) {
-                window.location.reload();
-            } else {
-                alert('Failed to update user.');
-                console.error('Error:', response);
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Failed to update sensor.');
+                    console.error('Error:', response);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred.');
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred.');
         }
     });
 });
@@ -134,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     window.location.reload();
                 } else {
-                    alert('Failed to delete user.');
+                    alert('Failed to delete sensor.');
                     console.error('Error:', response);
                 }
             } catch (error) {
