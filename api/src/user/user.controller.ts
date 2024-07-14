@@ -14,7 +14,7 @@ export class UserController {
   }
 
   @Get()
-  @Render('index')
+  @Render('users/index')
   async findAllView(): Promise<any> {
     const users = await this.userService.findAll();
     return { users };
