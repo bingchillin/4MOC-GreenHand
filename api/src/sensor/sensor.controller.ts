@@ -9,11 +9,13 @@ import {
     HttpException,
     HttpStatus,
     NotFoundException,
-    Render
+    Render,
+    UseGuards
 } from '@nestjs/common';
 import {SensorService} from './sensor.service';
 import {CreateSensorDto} from './dto/create-sensor.dto';
 import {UpdateSensorDto} from './dto/update-sensor.dto';
+import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 
 @Controller('sensor')
 export class SensorController {
@@ -29,6 +31,7 @@ export class SensorController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     @Render('sensors/sensors')
     async findAllView() {
