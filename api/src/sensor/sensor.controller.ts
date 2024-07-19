@@ -22,6 +22,7 @@ export class SensorController {
     constructor(private readonly sensorService: SensorService) {
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Body() createSensorDto: CreateSensorDto) {
         try {
@@ -43,6 +44,7 @@ export class SensorController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async findOne(@Param('id') id: string) {
         try {
@@ -52,6 +54,7 @@ export class SensorController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Patch(':id')
     async update(@Param('id') id: string, @Body() updateSensorDto: UpdateSensorDto) {
         try {
@@ -61,6 +64,7 @@ export class SensorController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async remove(@Param('id') id: string) {
         try {
