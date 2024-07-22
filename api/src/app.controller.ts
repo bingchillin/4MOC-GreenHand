@@ -25,6 +25,12 @@ export class AppController {
         return res.redirect('/user');
     }
 
+    @UseGuards(LocalAuthGuard)
+    @Post('auth/user/login')
+    async loginUser(@Request() req) {
+        return this.authService.login(req.user);
+    }
+
     @UseGuards(JwtAuthGuard)
     @Get('profile')
     getProfile(@Request() req) {
