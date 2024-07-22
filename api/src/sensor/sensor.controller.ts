@@ -44,7 +44,7 @@ export class SensorController {
         }
     }
 
-    @UseGuards(JwtAuthGuard)
+    //@UseGuards(JwtAuthGuard)
     @Get(':id')
     async findOne(@Param('id') id: string) {
         try {
@@ -54,7 +54,7 @@ export class SensorController {
         }
     }
 
-    @UseGuards(JwtAuthGuard)
+    //@UseGuards(JwtAuthGuard)
     @Patch(':id')
     async update(@Param('id') id: string, @Body() updateSensorDto: UpdateSensorDto) {
         try {
