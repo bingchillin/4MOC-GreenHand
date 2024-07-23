@@ -34,6 +34,15 @@ export class SensorService {
         return sensor;
     }
 
+    async findByUser(email: string) {
+        const res = this.sensorDocumentModel.find({email}).lean().exec();
+
+        if (!res) {
+            return "No sensors found for this user.";
+        }
+        return res;
+    }
+
     async update(id: string, updateSensorDto: UpdateSensorDto) {
         const existingSensor = await this.sensorDocumentModel.findById(id).lean().exec();
         if (!existingSensor) {

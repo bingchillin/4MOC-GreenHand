@@ -54,6 +54,15 @@ export class SensorController {
         }
     }
 
+    @Get('user/:email')
+    async findByUser(@Param('email') email: string) {
+        try {
+            return await this.sensorService.findByUser(email);
+        } catch (error) {
+            throw new NotFoundException();
+        }
+    }
+
     //@UseGuards(JwtAuthGuard)
     @Patch(':id')
     async update(@Param('id') id: string, @Body() updateSensorDto: UpdateSensorDto) {

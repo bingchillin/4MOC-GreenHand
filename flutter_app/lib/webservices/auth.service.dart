@@ -22,14 +22,17 @@ class AuthService {
     print(response.body);
     print(response.statusCode);
 
-    if (response.statusCode == 201) {
-      if (response.headers['content-type']?.contains('application/json') == true) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.headers['content-type'] ==
+          'application/json; charset=utf-8') {
         final responseData = jsonDecode(response.body);
         final token = responseData['access_token'];
+        final email = responseData['email'];
 
-        // Store the token securely
+        // Store the token and email securely
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('jwt_token', token);
+        await prefs.setString('user_email', email);
 
         return true;
       } else {
@@ -37,7 +40,6 @@ class AuthService {
         return false;
       }
     } else {
-      print('Login failed with status: ${response.statusCode}');
       return false;
     }
   }
@@ -45,10 +47,16 @@ class AuthService {
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('jwt_token');
+    await prefs.remove('user_email');
   }
 
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('jwt_token');
+  }
+
+  Future<String?> getEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user_email');
   }
 }

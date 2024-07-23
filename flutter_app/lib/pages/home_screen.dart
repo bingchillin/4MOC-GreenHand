@@ -1,30 +1,62 @@
 import 'package:flutter/material.dart';
-import '../webservices/auth.service.dart';
+import '../models/sensor.dart';
+import '../webservices/sensor_service.dart';
+import '../widgets/sensor_details_widget.dart';
 
-class HomeScreen extends StatelessWidget {
-  final AuthService authService;
+class HomeScreen extends StatefulWidget {
+  final SensorService sensorService;
 
-  const HomeScreen({super.key, required this.authService});
+  const HomeScreen({super.key, required this.sensorService});
 
-  Future<void> _logout(BuildContext context) async {
-    await authService.logout();
-    Navigator.pushReplacementNamed(context, '/');
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Future<Sensor?>? _sensorFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _sensorFuture = widget.sensorService.getSensorForUser();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () => _logout(context),
-          ),
-        ],
+        title: const Text('Sensor Details'),
       ),
-      body: const Center(
-        child: Text('Welcome to the home screen!'),
+      body: FutureBuilder<Sensor?>(
+        future: _sensorFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('No sensor found for the user'),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/new-sensor');
+                    },
+                    child: const Text('Add Sensor'),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            final sensor = snapshot.data!;
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: SensorDetailsWidget(sensor: sensor),
+            );
+          }
+        },
       ),
     );
   }
