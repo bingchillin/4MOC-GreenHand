@@ -3,7 +3,7 @@ class Sensor {
   final String name;
   final int humidityLevel;
   final int waterLevel;
-  final bool motorStatus;
+  bool motorStatus;
   final String email;
   final DateTime createdAt;
 

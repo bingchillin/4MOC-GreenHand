@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
             final sensor = snapshot.data!;
             return Padding(
               padding: const EdgeInsets.all(16),
-              child: SensorDetailsWidget(sensor: sensor),
+              child: SensorDetailsWidget(sensor: sensor, sensorService: widget.sensorService),
             );
           }
         },

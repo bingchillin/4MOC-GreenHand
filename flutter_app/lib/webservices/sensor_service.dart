@@ -38,4 +38,39 @@ class SensorService {
       return null;
     }
   }
+
+  Future<bool> updateMotorStatus(String sensorId, bool newStatus) async {
+    final response = await http.patch(
+      Uri.parse('$baseUrl/sensor/$sensorId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, bool>{
+        'motorStatus': newStatus,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['motorStatus'];
+    } else {
+      throw Exception('Failed to fetch motor status');
+    }
+  }
+
+  Future<bool> fetchCurrentMotorStatus(String sensorId) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/sensor/$sensorId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['motorStatus'];
+    } else {
+      throw Exception('Failed to fetch motor status');
+    }
+  }
 }

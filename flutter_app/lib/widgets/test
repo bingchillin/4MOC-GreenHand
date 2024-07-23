@@ -32,7 +32,7 @@ class _SensorDetailsWidgetState extends State<SensorDetailsWidget> {
         });
       } else {
         setState(() {
-          _errorMessage = 'Failed to update status.';
+          _errorMessage = 'Failed to update status. Please try again.';
           _isLoading = false;
         });
       }
@@ -56,21 +56,20 @@ class _SensorDetailsWidgetState extends State<SensorDetailsWidget> {
           children: [
             Row(
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.sensor.name,
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      Text("Humidité : ${widget.sensor.humidityLevel}%", style: const TextStyle(fontSize: 16)),
-                      const SizedBox(height: 10),
-                      Text("Niveau d'eau : ${widget.sensor.waterLevel}%", style: const TextStyle(fontSize: 16)),
-                    ],
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.sensor.name,
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Text("Humidité : ${widget.sensor.humidityLevel}%", style: const TextStyle(fontSize: 16)),
+                    const SizedBox(height: 10),
+                    Text("Niveau d'eau : ${widget.sensor.waterLevel}%", style: const TextStyle(fontSize: 16)),
+                  ],
                 ),
+                const Spacer(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
