@@ -5,8 +5,9 @@ import '../webservices/sensor_service.dart';
 class SensorDetailsWidget extends StatefulWidget {
   final Sensor sensor;
   final SensorService sensorService;
+  final VoidCallback onStatusChanged;
 
-  const SensorDetailsWidget({super.key, required this.sensor, required this.sensorService});
+  const SensorDetailsWidget({super.key, required this.sensor, required this.sensorService, required this.onStatusChanged});
 
   @override
   State<SensorDetailsWidget> createState() => _SensorDetailsWidgetState();
@@ -24,12 +25,8 @@ class _SensorDetailsWidgetState extends State<SensorDetailsWidget> {
     try {
       final success = await widget.sensorService.updateMotorStatus(widget.sensor.id, !widget.sensor.motorStatus);
       if (success) {
-        // Après une mise à jour réussie, confirmez l'état actuel avec la BDD
-        final currentStatus = await widget.sensorService.fetchCurrentMotorStatus(widget.sensor.id);
-        setState(() {
-          widget.sensor.motorStatus = currentStatus;
-          _isLoading = false;
-        });
+        // Après une mise à jour réussie, actualisez les données
+        widget.onStatusChanged();
       } else {
         setState(() {
           _errorMessage = 'Failed to update status.';
@@ -37,7 +34,6 @@ class _SensorDetailsWidgetState extends State<SensorDetailsWidget> {
         });
       }
     } catch (e) {
-      // Gestion des exceptions pour les erreurs réseau ou de serveur
       print('Error updating motor status: $e'); // Ajoutez des logs pour le débogage
       setState(() {
         _errorMessage = 'An error occurred. Please check your connection and try again.';
@@ -79,7 +75,7 @@ class _SensorDetailsWidgetState extends State<SensorDetailsWidget> {
                     else
                       ElevatedButton(
                         onPressed: _toggleMotorStatus,
-                        child: Text(widget.sensor.motorStatus ? 'Off' : 'On'),
+                        child: Text(widget.sensor.motorStatus ? 'On' : 'Off'),
                       ),
                     if (_errorMessage != null)
                       Text(_errorMessage!, style: const TextStyle(color: Colors.red)),

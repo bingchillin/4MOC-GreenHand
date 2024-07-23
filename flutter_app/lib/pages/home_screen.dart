@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future<Sensor?>? _sensorFuture;
+  late Future<Sensor?> _sensorFuture;
 
   @override
   void initState() {
@@ -21,11 +21,23 @@ class _HomeScreenState extends State<HomeScreen> {
     _sensorFuture = widget.sensorService.getSensorForUser();
   }
 
+  Future<void> _refreshSensor() async {
+    setState(() {
+      _sensorFuture = widget.sensorService.getSensorForUser();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sensor Details'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: _refreshSensor,
+          ),
+        ],
       ),
       body: FutureBuilder<Sensor?>(
         future: _sensorFuture,
@@ -53,7 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
             final sensor = snapshot.data!;
             return Padding(
               padding: const EdgeInsets.all(16),
-              child: SensorDetailsWidget(sensor: sensor, sensorService: widget.sensorService),
+              child: SensorDetailsWidget(
+                sensor: sensor,
+                sensorService: widget.sensorService,
+                onStatusChanged: _refreshSensor, // Ajoutez ici le callback pour actualiser
+              ),
             );
           }
         },
