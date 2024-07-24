@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/create_sensor_screen.dart';
 import 'package:flutter_app/pages/home_screen.dart';
 import 'package:flutter_app/pages/login_screen.dart';
 import 'package:flutter_app/webservices/auth.service.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginScreen(authService: authService),
         '/home': (context) => HomeScreen(sensorService: sensorService),
+        '/new-sensor': (context) => CreateSensorScreen(sensorService: sensorService),
       },
     );
   }

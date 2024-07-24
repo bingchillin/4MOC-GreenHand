@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/sensor.dart';
 import '../webservices/sensor_service.dart';
 import '../widgets/sensor_details_widget.dart';
+import 'create_sensor_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final SensorService sensorService;
@@ -25,6 +26,19 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _sensorFuture = widget.sensorService.getSensorForUser();
     });
+  }
+
+  Future<void> _navigateToAddSensor() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreateSensorScreen(sensorService: widget.sensorService),
+      ),
+    );
+
+    if (result == true) {
+      _refreshSensor();
+    }
   }
 
   @override
@@ -53,9 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   const Text('No sensor found for the user'),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/new-sensor');
-                    },
+                    onPressed: _navigateToAddSensor,
                     child: const Text('Add Sensor'),
                   ),
                 ],
@@ -68,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: SensorDetailsWidget(
                 sensor: sensor,
                 sensorService: widget.sensorService,
-                onStatusChanged: _refreshSensor, // Ajoutez ici le callback pour actualiser
+                onStatusChanged: _refreshSensor,
               ),
             );
           }

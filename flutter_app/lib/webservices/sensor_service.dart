@@ -73,4 +73,31 @@ class SensorService {
       throw Exception('Failed to fetch motor status');
     }
   }
+
+  Future<String> addSensorToUser(String sensorId) async {
+    final token = await authService.getToken();
+    final email = await authService.getEmail();
+
+    if (token == null || email == null) {
+      throw Exception('User not authenticated');
+    }
+
+    final response = await http.patch(
+      Uri.parse('$baseUrl/sensor/$sensorId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        //'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['email'];
+    } else {
+      throw Exception('Failed to update sensor with email');
+    }
+  }
 }
