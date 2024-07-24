@@ -1,0 +1,57 @@
+[{
+  "_id": {
+    "$oid": "6691ac32794b7f46fd6a50e9"
+  },
+  "name": "testFirst",
+  "humidityLevel": 94,
+  "waterLevel": 100,
+  "motorStatus": true,
+  "createdAt": {
+    "$date": "2024-07-12T22:20:34.730Z"
+  },
+  "__v": 0,
+  "userId": "6673f04df28fdb0c1a1e6a52",
+  "email": "charlie.brown@example.com"
+},
+{
+  "_id": {
+    "$oid": "6693ac44cf43537f4e3bc0e6"
+  },
+  "name": "Petit coeur",
+  "humidityLevel": 77,
+  "waterLevel": 12,
+  "motorStatus": false,
+  "email": "auth@test.fr",
+  "createdAt": {
+    "$date": "2024-07-14T10:45:24.293Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6693b076cf43537f4e3bc132"
+  },
+  "name": "aze",
+  "humidityLevel": 100,
+  "waterLevel": 100,
+  "motorStatus": false,
+  "email": "3juin@juikn.fr",
+  "createdAt": {
+    "$date": "2024-07-14T11:03:18.053Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6693b0c0cf43537f4e3bc138"
+  },
+  "name": "wxc",
+  "humidityLevel": 100,
+  "waterLevel": 100,
+  "motorStatus": false,
+  "email": "ken@ken",
+  "createdAt": {
+    "$date": "2024-07-14T11:04:32.980Z"
+  },
+  "__v": 0
+}]

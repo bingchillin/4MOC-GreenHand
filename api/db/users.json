@@ -1,0 +1,79 @@
+[{
+  "_id": {
+    "$oid": "6673f04df28fdb0c1a1e6a52"
+  },
+  "name": "3 juin",
+  "email": "3juin@juikn.fr",
+  "password": "password123",
+  "role": "user",
+  "createdAt": "2023-06-03T12:00:00Z"
+},
+{
+  "_id": {
+    "$oid": "6673f04df28fdb0c1a1e6a54"
+  },
+  "name": "Kenny",
+  "email": "ken@ken",
+  "password": "password123",
+  "role": "admin",
+  "createdAt": "2023-06-05T14:00:00Z"
+},
+{
+  "_id": {
+    "$oid": "6673f04df28fdb0c1a1e6a56"
+  },
+  "name": "juin",
+  "email": "ken@ken",
+  "password": "password123",
+  "role": "admin",
+  "createdAt": "2023-06-07T16:00:00Z"
+},
+{
+  "_id": {
+    "$oid": "6673f04df28fdb0c1a1e6a59"
+  },
+  "name": "Jack Walker",
+  "email": "jack.walker@example.com",
+  "password": "password123",
+  "role": "admin",
+  "createdAt": "2023-06-10T19:00:00Z"
+},
+{
+  "_id": {
+    "$oid": "6693d1000e956c7634297719"
+  },
+  "name": "AuthTest",
+  "email": "auth@test.fr",
+  "password": "$2b$10$oyWaJM1vpBc1FaLJopIcHuqASvAn.lPAlTi7kzAE05OETMkviUvs.",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2024-07-14T13:22:08.497Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "669aa5ff722be914d5f4b4db"
+  },
+  "name": "ezezez",
+  "email": "ezezez@ezezez.fr",
+  "password": "$2b$10$BIyWK3hQDlIumKrfqucdROq9M8SE/GZ/avihsnd.60mgEdCD74kEi",
+  "role": "user",
+  "createdAt": {
+    "$date": "2024-07-19T17:44:31.588Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "669aa61a722be914d5f4b4df"
+  },
+  "name": "peona",
+  "email": "test@test.fr",
+  "password": "$2b$10$IQW3coYDH7v1gYAFyX2LxOsXNZ9vFP0706HDEh3pwFOJtoKlfiSXi",
+  "role": "user",
+  "createdAt": {
+    "$date": "2024-07-19T17:44:58.099Z"
+  },
+  "__v": 0
+}]
