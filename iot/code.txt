@@ -1,0 +1,285 @@
+#include <FastLED.h>
+#include "FastLED_RGBW.h"
+#include <ESP32Servo.h>
+
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <Arduino_JSON.h>
+
+#define LED_PIN              13              // PIN pour le ruban LED
+#define HUMIDITY_SENSOR_PIN  34     // PIN pour le capteur d'humidité
+#define SERVO_MOTOR_PIN      18     // PIN pour le ServoMoteur
+#define TRIGGER_PIN          4      // Pin For The Ultra Sonic's Sensor Trigger
+#define ECHO_PIN             2      // Pin For The Ultra Sonic's Sensor Echo
+
+#define NUM_LEDS             5      // Nombre de LED Max
+#define TH                   16      // Maximum Height Of The Water Inside The Water Tank In cm
+#define IGH                  2      // Ignored Height Above The Water Tank In cm
+
+const int dry = 4095;
+const int wet = 1780;
+const uint8_t brightness = 128;
+
+const unsigned long MEASURE_TIMEOUT = 25000UL; // 25ms = ~8m à 340m/s
+const float SOUND_SPEED = 340.0 / 1000;
+float duration = 0.0;
+float distance = 0.0;
+float WH = 0.0;
+unsigned long P = 0;
+
+int humidity = 0;
+
+bool isWatering = false;
+
+CRGBW leds[NUM_LEDS];               // Definition du tableau LED
+CRGB *ledsRGB = (CRGB *) &leds[0];  // Modification du RGB en RGBW
+Servo myServo;
+
+//API INFO
+const char WIFI_SSID[] = "Kenny's Galaxy S21+ 5G";
+const char WIFI_PASSWORD[] = "meys3696";
+
+String HOST_NAME = "http://217.182.171.83";
+String PORT = ":3000";
+String SENSOR_PATH = "/sensor";
+String DEVICE_ID = "/6693ac44cf43537f4e3bc0e6";
+String REQUEST_PATH = HOST_NAME + SENSOR_PATH + DEVICE_ID;
+
+WiFiClient client;
+HTTPClient http;
+
+JSONVar myObject;
+String JSONResponse = "{}";
+
+void setup() {
+  Serial.begin(115200);
+
+  //WIFI
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  Serial.println("Connecting");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("Connected to WiFi network with IP Address: ");
+  Serial.println(WiFi.localIP());
+
+  FastLED.addLeds<WS2812, LED_PIN, RGB>(ledsRGB, getRGBWsize(NUM_LEDS));
+  FastLED.setBrightness(brightness);
+
+  initializeLEDs();
+  myServo.attach(SERVO_MOTOR_PIN);
+
+  pinMode(TRIGGER_PIN, OUTPUT);
+  digitalWrite(TRIGGER_PIN, LOW);
+  pinMode(ECHO_PIN, INPUT);
+
+  //Task Get Water level un tank
+  xTaskCreate(measureWaterLevel, "GetSensorWaterLevel", 4096, NULL, 1, NULL);
+
+  //Task Get Humidity
+  xTaskCreate(measureHumidity, "GetSensorHumidityPercent", 4096, NULL, 1, NULL);
+
+//Task Get Humidity
+  xTaskCreate(getAPIResponse, "GetMotorStatusFromAPI", 4096, NULL, 1, NULL);
+
+  xTaskCreate(patchInAPI, "UpdateDataInAPI", 4096, NULL, 1, NULL);
+
+  //Task Get Humidity
+  xTaskCreate(controlServo, "ControlServoMotor", 4096, NULL, 1, NULL);
+
+  //Task Turn on Led
+  xTaskCreate(turnOnLight, "TurnOnLedWithColor", 4096, NULL, 1, NULL);
+}
+
+void loop() {
+
+}
+
+void getAPIResponse(void * pvParameters) {
+  while(1){
+    
+    http.begin(client, REQUEST_PATH);
+
+    int httpResponseCode = http.GET();
+
+    if (httpResponseCode>0) {
+      Serial.print("HTTP Response code: ");
+      Serial.println(httpResponseCode);
+      JSONResponse = http.getString();
+    } else {
+      Serial.print("Error code: ");
+      Serial.println(httpResponseCode);
+    }
+
+    parseJson(JSONResponse);
+
+    isWatering = parseWatering();
+
+    http.end();
+
+    vTaskDelay(1000 / portTICK_PERIOD_MS); // Delay 10 second
+  }
+}
+
+void parseJson(String payload){
+  myObject = JSON.parse(payload);
+}
+
+bool parseWatering(){
+  bool motorStatus = isWatering;
+
+  if(myObject.hasOwnProperty("motorStatus")){
+    motorStatus = bool(myObject["motorStatus"]);
+  }
+
+  return motorStatus;
+}
+
+void patchInAPI(void * pvParameters) {
+  while(1){
+    JSONVar patchData;
+    patchData["humidityLevel"] = humidity;
+    patchData["waterLevel"] = P;
+    String jsonString = JSON.stringify(patchData);
+    
+    http.begin(client, REQUEST_PATH);
+    http.addHeader("Content-Type", "application/json");
+    
+    int httpResponseCode = http.PATCH(jsonString);
+
+    Serial.print("Response code PATCH Humidity and Water Level: ");
+    Serial.println(httpResponseCode);
+
+    http.end();
+
+    vTaskDelay(10000 / portTICK_PERIOD_MS); // Delay 10 second
+  }
+ 
+}
+
+void patchIsWateringInAPI() {
+  JSONVar patchData;
+  patchData["motorStatus"] = isWatering;
+  String jsonString = JSON.stringify(patchData);
+  
+  http.begin(client, REQUEST_PATH);
+  http.addHeader("Content-Type", "application/json");
+  
+
+  int httpResponseCode = http.PATCH(jsonString);
+
+  Serial.print("Response code PATCH isWatering : ");
+  Serial.println(httpResponseCode);
+
+  http.end();
+}
+
+void initializeLEDs() {
+  // Initialiser les LEDs
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CRGBW(0, 255, 0, 0);
+    FastLED.show();
+    //delay(1000);
+  }
+
+  // Éteindre les LEDs
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CRGBW(0, 0, 0, 0);
+  }
+  FastLED.show();
+}
+
+void measureWaterLevel(void * pvParameters) {
+  while(1){
+    digitalWrite(TRIGGER_PIN, LOW);
+    delayMicroseconds(5);
+    digitalWrite(TRIGGER_PIN, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(TRIGGER_PIN, LOW);
+
+    duration = pulseIn(ECHO_PIN, HIGH, MEASURE_TIMEOUT);
+    distance = (duration * 0.034 / 2);
+
+    Serial.print("Distance : ");
+    Serial.println(distance);
+
+    P = map(round(distance), 1, 14, 100, 0);
+
+    vTaskDelay(1000 / portTICK_PERIOD_MS); // Delay 1 second
+  }
+}
+
+void measureHumidity(void * pvParameters) {
+  while(1){
+    int valHumidity = analogRead(HUMIDITY_SENSOR_PIN);
+    humidity = map(valHumidity, wet, dry, 100, 0);
+    vTaskDelay(1000 / portTICK_PERIOD_MS); // Delay 1 second
+  }
+}
+
+int determineLedColor() {
+  if (humidity > 75) {
+    return 3; // Rouge
+  } else if (humidity > 50) {
+    return 1; // Vert
+  } else if (humidity > 25) {
+    return 2; // Orange
+  } else {
+    return 3; // Rouge
+  }
+
+}
+
+int determineLedNumber() {
+  Serial.print("NB Led: ");
+  Serial.println(P/20);
+  return round(P/20);
+}
+
+void controlServo(void * pvParameters) {
+  while(1){
+    if (humidity <= 25 || isWatering == true) {
+      myServo.write(0);
+      isWatering = true;
+    } else {
+      myServo.write(150);
+      isWatering = false;
+    }
+
+    patchIsWateringInAPI();
+    isWatering = false;
+    vTaskDelay(2000 / portTICK_PERIOD_MS); // Delay 1 second
+  }
+}
+
+void turnOnLight(void * pvParameters) {
+  while(1){
+    int red = 0, green = 0, blue = 0;
+    int ledsToLigth = determineLedNumber();
+    int ledsColor = determineLedColor();
+
+    switch (ledsColor) {
+      case 1:
+        green = 255; // Vert
+        break;
+      case 2:
+        red = 255; green = 165; // Orange
+        break;
+      case 3:
+        red = 255; // Rouge
+        break;
+    }
+
+    for (int i = 0; i < NUM_LEDS; i++) {
+      if (i < ledsToLigth) {
+        leds[i] = CRGBW(red, green, blue, 0);
+      } else {
+        leds[i] = CRGBW(0, 0, 0, 0);
+      }
+    }
+    FastLED.show();
+    vTaskDelay(1000 / portTICK_PERIOD_MS); // Delay 1 second
+
+  }
+}

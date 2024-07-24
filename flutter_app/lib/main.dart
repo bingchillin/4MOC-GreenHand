@@ -6,9 +6,9 @@ import 'package:flutter_app/webservices/auth.service.dart';
 import 'package:flutter_app/webservices/sensor_service.dart';
 
 void main() {
-  final AuthService authService = AuthService(baseUrl: 'http://localhost:3000');
+  final AuthService authService = AuthService(baseUrl: 'https://www.epe.world');
   final SensorService sensorService = SensorService(
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://www.epe.world',
     authService: authService,
   );
 
@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Auth Demo',
+      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
         '/': (context) => LoginScreen(authService: authService),
